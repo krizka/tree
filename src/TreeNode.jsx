@@ -450,6 +450,7 @@ class TreeNode extends React.Component {
     const { title, selected, icon } = this.props;
     const { rcTree: { prefixCls, showIcon, icon: treeIcon, draggable, loadData } } = this.context;
     const disabled = this.isDisabled();
+    const drag = draggable || undefined;
 
     const wrapClass = `${prefixCls}-node-content-wrapper`;
 
@@ -494,7 +495,7 @@ class TreeNode extends React.Component {
         onMouseLeave={this.onMouseLeave}
         onContextMenu={this.onContextMenu}
         onClick={this.onSelectorClick}
-        onDragStart={this.onDragStart}
+        onDragStart={drag && this.onDragStart}
       >
           {$icon}{$title}
         </span>
@@ -567,13 +568,14 @@ class TreeNode extends React.Component {
   render() {
     const {
       className,
-      dragOver, dragOverGapTop, dragOverGapBottom,
+      dragOver, dragOverGapTop, dragOverGapBottom, draggable,
     } = this.props;
     const { rcTree: {
       prefixCls,
       filterTreeNode,
     } } = this.context;
     const disabled = this.isDisabled();
+    const drag = draggable || undefined;
 
     return (
       <li
@@ -585,11 +587,11 @@ class TreeNode extends React.Component {
           'filter-node': filterTreeNode && filterTreeNode(this),
         })}
 
-        onDragEnter={this.onDragEnter}
-        onDragOver={this.onDragOver}
-        onDragLeave={this.onDragLeave}
-        onDrop={this.onDrop}
-        onDragEnd={this.onDragEnd}
+        onDragEnter={drag && this.onDragEnter}
+        onDragOver={drag && this.onDragOver}
+        onDragLeave={drag && this.onDragLeave}
+        onDrop={drag && this.onDrop}
+        onDragEnd={drag && this.onDragEnd}
       >
         {this.renderSwitcher()}
         {this.renderCheckbox()}
